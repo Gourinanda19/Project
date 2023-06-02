@@ -1,1 +1,1 @@
-# Project
+This project gives us the attendance data of a class of each day by using the face_recognition library. This library is used for face detection, face recognition and facial landmarks detection. Other libraries used here include numpy, cv2, csv, os and datetime. 
