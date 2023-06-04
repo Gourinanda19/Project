@@ -198,7 +198,7 @@ for file_name in os.listdir(folder_path):
         file_path = os.path.join(folder_path, file_name)
 
         try:
-            # Open the CSV file using openpyxl
+            # Open the CSV file 
             with open(file_path, 'r') as csvfile:
                 reader = csv.reader(csvfile)
                 # Skip the header row
