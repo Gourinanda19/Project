@@ -158,7 +158,6 @@ try:
                     if name in students:
                         # Remove student from list once attendance is marked
                         students.remove(name)
-                        # print(students)
                         current_time = now.strftime("%H-%M-%S")
                         lnwriter.writerow([name, current_time])
 
@@ -204,7 +203,7 @@ for file_name in os.listdir(folder_path):
                 # Skip the header row
                 next(reader)
 
-                # Iterate over rows in the CSV file
+                # Loop through rows in the CSV file
                 for row in reader:
                     name = row[0]  # Assume the student name is in first column
 
