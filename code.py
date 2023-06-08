@@ -9,22 +9,22 @@ from datetime import datetime
 # Function to analyze attendance data
 def analyze_attendance(csv_file):
     global known_face_encodings
-    # Open the CSV file
+    # Open CSV file
     with open(csv_file, 'r') as csvfile:
         reader = csv.reader(csvfile)
 
-        # Skip the header row
+        # leave the header row out
         next(reader)
 
         # Initialize variables for attendance analysis
         total_students = len(known_face_names)
         present_students = 0
 
-        # Iterate over each row in the CSV file
+        # Iterate through each row of CSV file
         for row in reader:
             name, timestamp = row
 
-            # Check if the student was present
+            # Check if student attended
             if timestamp != "":
                 present_students += 1
 
@@ -48,20 +48,20 @@ except Exception as e:
 # Define the folder path where the images are located
 folder_path = "pictures/"
 
-# Initialize empty lists to store the face encodings and names
+# Initialize an empty list to store face encoding and names of individuals
 known_face_encodings = []
 known_face_names = []
 
-# Iterate over the files in the folder
+# Recapitulate over files in  folder
 for file_name in os.listdir(folder_path):
     # Construct the full file path
     file_path = os.path.join(folder_path, file_name)
 
     try:
-        # Load the image file
+        # Download image file
         image = face_recognition.load_image_file(file_path)
 
-        # Encode the face
+        # Encode the face of individual
         encoding = face_recognition.face_encodings(image)
 
         # Ensure that at least one face is found in the image
@@ -70,13 +70,13 @@ for file_name in os.listdir(folder_path):
             known_face_names.append(os.path.splitext(file_name)[0])
         else:
             print(f"No face found in {file_name}")
-    except Exception as a:
-        print(f"Failed to process image {file_name}: {a}")
+    except Exception as e:
+        print(f"Failed to process image {file_name}: {e}")
 
 # Make a copy of known face names for attendance tracking
 students = known_face_names.copy()
 
-# Initialize variables for face recognition
+# Initialize some variables for the face detection
 face_locations = []
 face_encodings = []
 face_names = []
@@ -87,7 +87,7 @@ threshold = 0.6
 now = datetime.now()
 current_date = now.strftime("%Y-%m-%d")
 
-# Open the CSV file for writing attendance
+# Open CSV file to enter  attendance data
 try:
     f = open("attendance_files/"+current_date + '.csv', 'w+', newline='')
 except Exception as e:
@@ -101,25 +101,25 @@ try:
 
     # Main loop for capturing and processing video frames
     while True:
-        # Read the frame from video capture
+        # Read  frame of captured video
         ret, frame = video_capture.read()
         if not ret:
             print("Failed to capture video frame")
             break
 
-        # Resize the frame for faster face recognition
+        # Resize frame for rapid face identification
         small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
         rgb_small_frame = small_frame[:, :, ::-1]
 
         if s:
-            # Find face locations and encodings in the frame
+            # Finding the locations and encoding of face in the frame
             face_locations = face_recognition.face_locations(rgb_small_frame)
             face_encodings = face_recognition.face_encodings(rgb_small_frame,
                                                              face_locations)
             face_names = []
 
             for face_encoding in face_encodings:
-                # Compare face encodings with known faces
+                # Compare the encoding data with known faces
                 matches = face_recognition.compare_faces(known_face_encodings,
                                                          face_encoding,
                                                          tolerance=threshold)
@@ -128,7 +128,7 @@ try:
                 face_distances = face_recognition.face_distance(abc,
                                                                 face_encoding)
 
-                # Find the best match
+                # Find the perfect match
                 if min(face_distances) < 0.5:
                     best_match_index = np.argmin(face_distances)
 
@@ -158,13 +158,14 @@ try:
                     if name in students:
                         # Remove student from list once attendance is marked
                         students.remove(name)
+                        # print(students)
                         current_time = now.strftime("%H-%M-%S")
                         lnwriter.writerow([name, current_time])
 
-        # Display the frame
+        # The frame should be displayed
         cv2.imshow("Attendance System", frame)
 
-        # Check for 'q' key press to exit
+        # look for the 'q' key and press to exit
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
@@ -172,7 +173,7 @@ except Exception as e:
     print(f"An error occurred during video processing: {e}")
 
 finally:
-    # Release video capture and close windows
+    # The captured video should be relased and close the windows
     video_capture.release()
     cv2.destroyAllWindows()
     f.close()
@@ -184,26 +185,25 @@ except Exception as e:
     print(f"Failed to analyze attendance: {e}")
 
 # Define the folder path where the attendance files are located
-folder_path = "attendance_files/"
+folder_path2 = "attendance_files/"
 
 # Initialize a dictionary to store attendance counts per student
 attendance_counts = {i: 0 for i in known_face_names}
 
-# Iterate over the files in the folder
-for file_name in os.listdir(folder_path):
-    # Check if the file is a CSV file
+# All the files in folder will be iterated
+for file_name in os.listdir(folder_path2):
+    # conform whether the file is  CSV file or not
     if file_name.endswith(".csv"):
-        # Construct the full file path
-        file_path = os.path.join(folder_path, file_name)
+        # To make a full file path
+        file_path = os.path.join(folder_path2, file_name)
 
         try:
-            # Open the CSV file 
             with open(file_path, 'r') as csvfile:
                 reader = csv.reader(csvfile)
-                # Skip the header row
+                # Pass over the header row
                 next(reader)
 
-                # Loop through rows in the CSV file
+                # Iterate through all rows of CSV file
                 for row in reader:
                     name = row[0]  # Assume the student name is in first column
 
@@ -215,7 +215,7 @@ for file_name in os.listdir(folder_path):
 
 
 # Calculate attendance percentages
-total_files = len(os.listdir(folder_path))
+total_files = len(os.listdir(folder_path2))
 attendance_percentages = {}
 for name, count in attendance_counts.items():
     percentage = (count / total_files) * 100
