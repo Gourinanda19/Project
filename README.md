@@ -38,5 +38,11 @@ The code that we further modified: https://i-know-python.com/facial-recognition-
 
 The youtube link we referred: https://www.youtube.com/watch?v=A6464U4bPPQ
 
+Other sites which were referred include:
+* https://www.geeksforgeeks.org/how-to-install-face-recognition-in-python-on-windows/
+* https://pypi.org/project/face-recognition/
+*  https://docs.python.org/3/library/csv.html
+*  https://www.geeksforgeeks.org/numpy-in-python-set-1-introduction/
+
 
 
